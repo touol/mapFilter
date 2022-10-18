@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model package="mapfilter" baseClass="xPDOObject" platform="mysql" defaultEngine="InnoDB" phpdoc-package="mapfilter"
+       version="1.1">
+    <object class="mfClass" table="mapfilter_classes" extends="xPDOSimpleObject">
+        <field key="alias" dbtype="varchar" precision="25" phptype="string" null="false" default=""/>
+        <field key="class" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
+        <field key="class_php" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
+        <field key="class_php_path" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
+        <field key="active" dbtype="tinyint" precision="1" phptype="boolean" null="false" default="0"/>
+
+        <index alias="active" name="active" primary="false" unique="false" type="BTREE">
+            <column key="active" length="" collation="A" null="false"/>
+        </index>
+        <composite alias="mfOption" class="mfOption" local="id" foreign="class_id" cardinality="many" owner="local"/>
+    </object>
+    <object class="mfFilter" table="mapfilter_filters" extends="xPDOSimpleObject">
+        <field key="name" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
+    </object>
+    <object class="mfFieldType" table="mapfilter_field_types" extends="xPDOSimpleObject">
+        <field key="name" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
+    </object>
+    <object class="mfOption" table="mapfilter_options" extends="xPDOSimpleObject">
+        <field key="class_id" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="true" default="0"/>
+        <field key="option_native_id" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="true" default="0"/>
+        <field key="key" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
+        <field key="alias" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
+        <field key="field_type_id" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="true" default="0"/>
+        <field key="filter_id" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="true" default="0"/>
+        <field key="label" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
+        <field key="outer_chunk" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
+        <field key="row_chunk" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
+        <field key="show_colpased" dbtype="tinyint" precision="1" phptype="boolean" null="false" default="0"/>
+        <field key="active" dbtype="tinyint" precision="1" phptype="boolean" null="false" default="0"/>
+
+        <index alias="class_id" name="class_id" primary="false" unique="false" type="BTREE">
+            <column key="class_id" length="" collation="A" null="false"/>
+        </index>
+        <index alias="option_native_id" name="option_native_id" primary="false" unique="false" type="BTREE">
+            <column key="option_native_id" length="" collation="A" null="false"/>
+        </index>
+        <index alias="key" name="key" primary="false" unique="false" type="BTREE">
+            <column key="key" length="" collation="A" null="false"/>
+        </index>
+        <index alias="active" name="active" primary="false" unique="false" type="BTREE">
+            <column key="active" length="" collation="A" null="false"/>
+        </index>
+
+        <aggregate alias="mfClass" class="mfClass" local="class_id" foreign="id" cardinality="one" owner="foreign"/>
+        <composite alias="mfOptVal" class="mfOptVal" local="id" foreign="option_id" cardinality="many" owner="local"/>
+    </object>
+
+    <object class="mfOptVal" table="mapfilter_options_values" extends="xPDOSimpleObject">
+        <field key="option_id" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" default="0"/>
+        <field key="value" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
+
+        <index alias="option_id" name="option_id" primary="false" unique="false" type="BTREE">
+            <column key="option_id" length="" collation="A" null="false"/>
+        </index>
+        <index alias="value" name="value" primary="false" unique="false" type="BTREE">
+            <column key="value" length="" collation="A" null="false"/>
+        </index>
+
+        <aggregate alias="mfOption" class="mfOption" local="option_id" foreign="id" cardinality="one" owner="foreign"/>
+    </object>
+
+    <object class="mfResVal" table="mapfilter_options_resource_values" extends="xPDOObject">
+        <field key="resource_id" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="true" default="0"/>
+        <field key="value_id" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="true" default="0"/>
+
+        <index alias="resource_id" name="resource_id" primary="false" unique="false" type="BTREE">
+            <column key="resource_id" length="" collation="A" null="false"/>
+        </index>
+        <index alias="value_id" name="value_id" primary="false" unique="false" type="BTREE">
+            <column key="value_id" length="" collation="A" null="false"/>
+        </index>
+    </object>
+    <object class="mfCategoryChild" table="mapfilter_category_childs" extends="xPDOObject">
+        <field key="resource_id" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="true" default="0"/>
+        <field key="category_id" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="true" default="0"/>
+
+        <index alias="resource_id" name="resource_id" primary="false" unique="false" type="BTREE">
+            <column key="resource_id" length="" collation="A" null="false"/>
+        </index>
+        <index alias="category_id" name="category_id" primary="false" unique="false" type="BTREE">
+            <column key="category_id" length="" collation="A" null="false"/>
+        </index>
+    </object>
+</model>
